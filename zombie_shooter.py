@@ -34,7 +34,7 @@ class ZombieShooter:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     # Move the player up.
-                    self.ship.rect.x += 1
+                    self.player.rect.y -= 1
                     
 
     def _update_screen(self):               
