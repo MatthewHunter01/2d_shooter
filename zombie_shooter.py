@@ -33,15 +33,26 @@ class ZombieShooter:
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    self.player.moving_up = True
-                elif event.key == pygame.K_DOWN:
-                    self.player.moving_down =True
-
+                self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP:
+                self._check_keyup_events(event)
+
+
+    def _check_keydown_events(self, event):
+        """Respond to key press """
+        if event.key == pygame.K_UP:
+                    self.player.moving_up = True
+        elif event.key == pygame.K_DOWN:
+                    self.player.moving_down =True
+        elif event.key == pygame.K_q:
+            sys.exit()
+        
+
+    def _check_keyup_events(self, event):
+        """Respond to key releases."""
+        if event.key == pygame.K_UP:
                     self.player.moving_up = False
-                elif event.key == pygame.K_DOWN:
+        elif event.key == pygame.K_DOWN:
                     self.player.moving_down = False
                     
 
