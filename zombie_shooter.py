@@ -24,6 +24,7 @@ class ZombieShooter:
         """Start the main loop for the game."""
         while True: 
             self._check_events()
+            self.player.update()
             self._update_screen()
 
     def _check_events(self):
@@ -33,8 +34,15 @@ class ZombieShooter:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
-                    # Move the player up.
-                    self.player.rect.y -= 1
+                    self.player.moving_up = True
+                elif event.key == pygame.K_DOWN:
+                    self.player.moving_down =True
+
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP:
+                    self.player.moving_up = False
+                elif event.key == pygame.K_DOWN:
+                    self.player.moving_down = False
                     
 
     def _update_screen(self):               

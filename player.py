@@ -21,6 +21,17 @@ class Player:
         # Start each new player at the left center of the screen/
         self.rect.midleft = self.screen_rect.midleft 
 
+        # Movement flag
+        self.moving_up = False
+        self.moving_down = False
+
+    def update(self):
+        """Update the players position based on the movement flags."""
+        if self.moving_up: 
+            self.rect.y -= 1
+        if self.moving_down: 
+            self.rect.y += 1
+
     def blitme(self):
         """Draw the player at its current location."""
         self.screen.blit(self.image, self.rect)
