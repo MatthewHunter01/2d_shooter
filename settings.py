@@ -11,4 +11,10 @@ class Settings:
         #Player Settings
         self.player_speed = 1.5
 
+        # Bullet Settings 
+        self.bullet_speed = 1.0 
+        self.bullet_width = 5
+        self.bullet_height = 20
+        self.bullet_color = (60, 60, 60)
+
         
