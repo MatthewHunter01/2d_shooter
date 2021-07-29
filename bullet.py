@@ -7,7 +7,7 @@ class Bullet(Sprite):
     def __init__(self, zs_game):
         """Create a bullet object at the players current position."""
         super().__init__()
-        self.sceen = zs_game.screen
+        self.screen = zs_game.screen
         self.settings = zs_game.settings
         self.color = self.settings.bullet_color
 
@@ -20,9 +20,9 @@ class Bullet(Sprite):
         self.x = float(self.rect.x)
 
     def update(self):
-        """Mover the bullet across the screen."""
+        """Move the bullet across the screen."""
         # Update the decimal position of the bullet 
-        self.x -= self.settings.bullet_speed
+        self.x += self.settings.bullet_speed
         # Update the rect positon. 
         self.rect.x = self.x
 

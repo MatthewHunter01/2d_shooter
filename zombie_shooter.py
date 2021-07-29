@@ -29,6 +29,13 @@ class ZombieShooter:
             self._check_events()
             self.player.update()
             self.bullets.update()
+
+            # Get rid of bullets that have disappeared.
+            for bullet in self.bullets.copy(): 
+                if bullet.rect.left > self.screen.rect_right:
+                    self.bullets.remove(bullet)
+            print(len(self.bullets))
+            
             self._update_screen()
 
     def _check_events(self):
@@ -72,6 +79,8 @@ class ZombieShooter:
         """Update images on the screen, and flip to the new screen."""
         self.screen.fill(self.settings.bg_color)
         self.player.blitme()
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
 
         pygame.display.flip()
 
