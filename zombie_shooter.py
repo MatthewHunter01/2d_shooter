@@ -5,6 +5,7 @@ import pygame
 from settings import Settings
 from player import Player
 from bullet import Bullet
+from zombie import Zombie
 
 class ZombieShooter:
     """Overall class to manage game assets and behavior"""
@@ -22,6 +23,9 @@ class ZombieShooter:
 
         self.player = Player(self)
         self.bullets = pygame.sprite.Group()
+        self.zombies = pygame.sprite.Group()
+
+        self._create_hoard()
 
     def run_game(self): 
         """Start the main loop for the game."""
@@ -78,6 +82,12 @@ class ZombieShooter:
         for bullet in self.bullets.copy(): 
             if bullet.rect.left > 2000:
                 self.bullets.remove(bullet)
+
+    def _create_hoard(self):
+        """Create the hoard of zombies."""
+        # Make a zombie.
+        zombie = Zombie(self)
+        self.zombies.add(zombie)
                     
 
     def _update_screen(self):               
@@ -86,6 +96,7 @@ class ZombieShooter:
         self.player.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.zombies.draw(self.screen)
 
         pygame.display.flip()
 
