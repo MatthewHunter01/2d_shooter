@@ -28,14 +28,7 @@ class ZombieShooter:
         while True: 
             self._check_events()
             self.player.update()
-            self.bullets.update()
-
-            # Get rid of bullets that have disappeared.
-            for bullet in self.bullets.copy(): 
-                if bullet.rect.left > self.screen.rect_right:
-                    self.bullets.remove(bullet)
-            print(len(self.bullets))
-            
+            self._update_bullets()
             self._update_screen()
 
     def _check_events(self):
@@ -71,8 +64,20 @@ class ZombieShooter:
     
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullet group."""
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
+    
+    def _update_bullets(self):
+        """Update position of bullets and get rid of old bullets."""
+        # Update bullet positions.
+        self.bullets.update()
+
+        # Get rid of bullets that have disappeared.
+        for bullet in self.bullets.copy(): 
+            if bullet.rect.left > 2000:
+                self.bullets.remove(bullet)
                     
 
     def _update_screen(self):               
