@@ -4,6 +4,7 @@ import pygame
 
 from settings import Settings
 from player import Player
+from bullet import Bullet
 
 class ZombieShooter:
     """Overall class to manage game assets and behavior"""
@@ -20,12 +21,14 @@ class ZombieShooter:
         pygame.display.set_caption("Zombie Shooter")
 
         self.player = Player(self)
+        self.bullets = pygame.sprite.Group()
 
     def run_game(self): 
         """Start the main loop for the game."""
         while True: 
             self._check_events()
             self.player.update()
+            self.bullets.update()
             self._update_screen()
 
     def _check_events(self):
@@ -47,6 +50,8 @@ class ZombieShooter:
                     self.player.moving_down =True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
         
 
     def _check_keyup_events(self, event):
@@ -55,6 +60,12 @@ class ZombieShooter:
                     self.player.moving_up = False
         elif event.key == pygame.K_DOWN:
                     self.player.moving_down = False
+
+    
+    def _fire_bullet(self):
+        """Create a new bullet and add it to the bullet group."""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
                     
 
     def _update_screen(self):               
