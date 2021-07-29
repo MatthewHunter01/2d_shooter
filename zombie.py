@@ -14,8 +14,8 @@ class Zombie(Sprite):
         self.rect = self.image.get_rect()
 
         # Start each new zombie near the top right of the screen.
-        self.rect.y = self.rect.height - 350
-        self.rect.x = self.rect.width + 900
+        self.rect.x = self.rect.width + 800
+        self.rect.y = self.rect.height
 
         # Store the zombie's exact vertical position.
         self.y = float(self.rect.y)

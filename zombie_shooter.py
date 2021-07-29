@@ -85,9 +85,20 @@ class ZombieShooter:
 
     def _create_hoard(self):
         """Create the hoard of zombies."""
-        # Make a zombie.
+        # create a zombie and find a number of zombies in a row
+        # Spacing between each zombie is equal to one zombie height
         zombie = Zombie(self)
-        self.zombies.add(zombie)
+        zombie_height = zombie.rect.height
+        availble_space_y = self.settings.screen_height - (2 * zombie_height)
+        number_zombies_y = availble_space_y // (2 * zombie_height)
+
+        #create the first row of zombies 
+        for zombie_number in range(number_zombies_y):
+            #create a zombie and place it in the row.
+            zombie = Zombie(self)
+            zombie.y = zombie_height + 2 * zombie_height * zombie_number
+            zombie.rect.y = zombie.y
+            self.zombies.add(zombie)
                     
 
     def _update_screen(self):               
