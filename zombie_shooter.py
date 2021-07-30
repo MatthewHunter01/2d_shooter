@@ -1,6 +1,7 @@
 import sys 
 
 import pygame
+from pygame.constants import FULLSCREEN
 
 from settings import Settings
 from player import Player
@@ -33,6 +34,7 @@ class ZombieShooter:
             self._check_events()
             self.player.update()
             self._update_bullets()
+            self._update_zombies()
             self._update_screen()
 
     def _check_events(self):
@@ -83,22 +85,54 @@ class ZombieShooter:
             if bullet.rect.left > 2000:
                 self.bullets.remove(bullet)
 
+    
+    def _update_zombies(self):
+        """update the positions of all the zombies in the hoard."""
+        self._check_hoard_edges()
+        self.zombies.update()
+
     def _create_hoard(self):
         """Create the hoard of zombies."""
         # create a zombie and find a number of zombies in a row
         # Spacing between each zombie is equal to one zombie height
         zombie = Zombie(self)
+        zombie_width, zombie_height = zombie.rect.size
         zombie_height = zombie.rect.height
         availble_space_y = self.settings.screen_height - (2 * zombie_height)
         number_zombies_y = availble_space_y // (2 * zombie_height)
 
-        #create the first row of zombies 
-        for zombie_number in range(number_zombies_y):
-            #create a zombie and place it in the row.
-            zombie = Zombie(self)
-            zombie.y = zombie_height + 2 * zombie_height * zombie_number
-            zombie.rect.y = zombie.y
-            self.zombies.add(zombie)
+        #determine the number of rows of zombies that fit on screen
+        player_width = self.player.rect.width
+        availble_space_x = (self.settings.screen_height - (
+                                3 * zombie_width) - player_width)
+        number_rows = availble_space_x // (2 * zombie_width)
+
+        #create the full hoard of zombies.
+        for row_number in range (number_rows):
+            for zombie_number in range(number_zombies_y):
+                self._create_zombie(zombie_number, row_number)
+
+    def _create_zombie(self, zombie_number, row_number):
+        zombie = Zombie(self)
+        zombie_width, zombie_height = zombie.rect.size
+        zombie_height = zombie.rect.height
+        zombie.y = zombie_height + 2 * zombie_height * zombie_number
+        zombie.rect.y = zombie.y
+        zombie.rect.x = zombie_width + 2 * zombie.rect.width * row_number
+        self.zombies.add(zombie)
+
+    def _check_hoard_edges(self):
+        """Respond appropriatly if any zombies have reached an edge."""
+        for zombie in self.zombies.sprites():
+            if zombie.check_edges():
+                self._change_hoard_direction()
+                break
+
+    def _change_hoard_direction(self):
+        """Drop the entire fleet and change the fleet's direction."""
+        for zombie in self.zombies.sprites():
+            zombie.rect.x += self.settings.hoard_shuffle_speed
+        self.settings.hoard_direction *= -1
                     
 
     def _update_screen(self):               

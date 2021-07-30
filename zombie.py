@@ -1,3 +1,4 @@
+from settings import Settings
 import pygame
 from pygame.sprite import Sprite
 
@@ -8,14 +9,30 @@ class Zombie(Sprite):
         """Initialize the zombie and set its starting position."""
         super().__init__()
         self.screen = zs_game.screen
+        self.settings = zs_game.settings
 
         # Load the zombie image and its rect attribute.
         self.image = pygame.image.load('images/zombie.png')
         self.rect = self.image.get_rect()
 
         # Start each new zombie near the top right of the screen.
-        self.rect.x = self.rect.width + 800
+        self.rect.x = self.rect.width 
         self.rect.y = self.rect.height
+        
 
         # Store the zombie's exact vertical position.
         self.y = float(self.rect.y)
+
+    def check_edges(self):
+        """Return True if zombie is at the edge of screen."""
+        screen_rect = self.screen.get_rect()
+        if self.rect.bottom >= 0 or self.rect.top <= screen_rect.top: 
+            return True
+
+    def update(self):
+        """Move the zombies up or down"""
+        self.y += (self.settings.zombie_speed * 
+                        self.settings.hoard_direction)
+        self.rect.y = self.y
+
+    
