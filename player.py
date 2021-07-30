@@ -8,7 +8,7 @@ class Player:
         self.screen_rect = zs_game.screen.get_rect()
 
         # Load the player image and get its rect.
-        self.image = pygame.image.load('images/player.bmp')
+        self.image = pygame.image.load('images/player.png')
         self.rect = self.image.get_rect()
         # Start each new player at the left center of the screen/
         self.rect.midleft = self.screen_rect.midleft 
@@ -17,7 +17,7 @@ class Player:
         self.screen_rect = zs_game.screen.get_rect()
 
         # Load the player image and get its rect.
-        self.image = pygame.image.load('images/player.bmp')
+        self.image = pygame.image.load('images/player.png')
         self.rect = self.image.get_rect()
         # Start each new player at the left center of the screen/
         self.rect.midleft = self.screen_rect.midleft 
