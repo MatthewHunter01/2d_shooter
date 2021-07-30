@@ -1,8 +1,11 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Player:
+
+class Player(Sprite):
     def __init__(self, zs_game):
         """Initialize the player and set its starting position"""
+        super().__init__()
         self.screen = zs_game.screen
         self.settings = zs_game.settings
         self.screen_rect = zs_game.screen.get_rect()

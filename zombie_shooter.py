@@ -70,6 +70,7 @@ class ZombieShooter:
             self.stats.reset_stats()
             self.stats.game_active = True
             self.sb.prep_score()
+            self.sb.prep_players()
 
             self.zombies.empty()
             self.bullets.empty()
@@ -148,6 +149,7 @@ class ZombieShooter:
         if self.stats.players_left > 0:
 
             self.stats.players_left -= 1
+            self.sb.prep_players()
 
             self.zombies.empty()
             self.bullets.empty()
