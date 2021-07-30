@@ -6,6 +6,7 @@ from pygame.constants import FULLSCREEN
 
 from settings import Settings
 from game_stats import GameStats
+from button import Button
 from player import Player
 from bullet import Bullet
 from zombie import Zombie
@@ -32,6 +33,8 @@ class ZombieShooter:
 
         self._create_hoard()
 
+        self.play_button = Button(self, "Play")
+
     def run_game(self): 
         """Start the main loop for the game."""
         while True: 
@@ -41,7 +44,7 @@ class ZombieShooter:
                 self.player.update()
                 self._update_bullets()
                 self._update_zombies()
-                
+
             self._update_screen()
 
     def _check_events(self):
@@ -53,6 +56,14 @@ class ZombieShooter:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN: 
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
+
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when button is cliked"""
+        if self.play_button.rect.collidepoint(mouse_pos):
+            self.stats.game_active = True
 
 
     def _check_keydown_events(self, event):
@@ -184,6 +195,9 @@ class ZombieShooter:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.zombies.draw(self.screen)
+
+        if not self.stats.game_active: 
+            self.play_button.draw_button()
 
         pygame.display.flip()
 
