@@ -12,3 +12,4 @@ class GameStats:
     def reset_stats(self):
         """Initialize stats that can change during the game."""
         self.players_left = self.settings.player_limit
+        self.score = 0 

@@ -24,6 +24,7 @@ class Settings:
 
         #how quickly the game speeds up
         self.speedup_scale = 1.5
+        self.score_scale = 1.5
 
         self.initialize_dynamic_settings()
 
@@ -33,8 +34,13 @@ class Settings:
         self.bullet_speed = 6
         self.zombie_speed = 1.5
 
+        self.zombie_points = 50
+
     def increase_speed(self):
         """Increase speed settings"""
         self.player_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.zombie_speed *= self.speedup_scale
+
+        self.zombie_points = int(self.zombie_points * self.score_scale)
+        print(self.zombie_points)

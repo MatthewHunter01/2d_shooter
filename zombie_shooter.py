@@ -6,6 +6,7 @@ from pygame.constants import FULLSCREEN
 
 from settings import Settings
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from button import Button
 from player import Player
 from bullet import Bullet
@@ -26,6 +27,7 @@ class ZombieShooter:
         pygame.display.set_caption("Zombie Shooter")
 
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
 
         self.player = Player(self)
         self.bullets = pygame.sprite.Group()
@@ -67,6 +69,7 @@ class ZombieShooter:
             self.settings.initialize_dynamic_settings()
             self.stats.reset_stats()
             self.stats.game_active = True
+            self.sb.prep_score()
 
             self.zombies.empty()
             self.bullets.empty()
@@ -117,6 +120,11 @@ class ZombieShooter:
         """Respond to bullet-zombie collisions."""   
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.zombies, True, True)
+
+        if collisions:
+            for zombies in collisions.values():
+                self.stats.score += self.settings.zombie_points * len(zombies)
+            self.sb.prep_score()
 
         if not self.zombies:
             self.bullets.empty()
@@ -208,6 +216,7 @@ class ZombieShooter:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.zombies.draw(self.screen)
+        self.sb.show_score()
 
         if not self.stats.game_active: 
             self.play_button.draw_button()
