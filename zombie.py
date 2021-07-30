@@ -11,16 +11,13 @@ class Zombie(Sprite):
         self.screen = zs_game.screen
         self.settings = zs_game.settings
 
-        # Load the zombie image and its rect attribute.
         self.image = pygame.image.load('images/zombie.png')
         self.rect = self.image.get_rect()
 
-        # Start each new zombie near the top right of the screen.
         self.rect.x = self.rect.width 
         self.rect.y = self.rect.height
         
 
-        # Store the zombie's exact vertical position.
         self.y = float(self.rect.y)
 
     def check_edges(self):

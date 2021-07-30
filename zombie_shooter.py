@@ -141,7 +141,6 @@ class ZombieShooter:
         if pygame.sprite.spritecollideany(self.player, self.zombies):
             self._player_hit()
 
-        #look for zombies hitting the right of the screen 
         self._check_zombies_right()
 
     def _player_hit(self):
@@ -167,7 +166,6 @@ class ZombieShooter:
         screen_rect = self.screen.get_rect()
         for zombie in self.zombies.sprites():
             if zombie.rect.right >= screen_rect.right:
-                #treat this the same as if the player got hit
                 self._player_hit()
                 break
 
