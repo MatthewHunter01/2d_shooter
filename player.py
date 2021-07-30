@@ -11,7 +11,7 @@ class Player:
         self.image = pygame.image.load('images/player.png')
         self.rect = self.image.get_rect()
         # Start each new player at the left center of the screen/
-        self.rect.midleft = self.screen_rect.midleft 
+        self.rect.midright = self.screen_rect.midright 
         """Initialize the player and set its starting position"""
         self.screen = zs_game.screen
         self.screen_rect = zs_game.screen.get_rect()
@@ -20,7 +20,7 @@ class Player:
         self.image = pygame.image.load('images/player.png')
         self.rect = self.image.get_rect()
         # Start each new player at the left center of the screen/
-        self.rect.midleft = self.screen_rect.midleft 
+        self.rect.midright = self.screen_rect.midright 
 
         # Store a decimal value for the players vertical position.
         self.y = float(self.rect.y)

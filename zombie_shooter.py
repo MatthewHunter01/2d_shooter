@@ -82,8 +82,13 @@ class ZombieShooter:
 
         # Get rid of bullets that have disappeared.
         for bullet in self.bullets.copy(): 
-            if bullet.rect.left > 2000:
+            if bullet.rect.right < 0:
                 self.bullets.remove(bullet)
+
+        #check for any bullets that have hit zombies 
+        #  If so, get rid of the bullet and the zombie
+        collisions = pygame.sprite.groupcollide(
+            self.bullets, self.zombies, True, True)
 
     
     def _update_zombies(self):

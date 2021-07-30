@@ -14,7 +14,7 @@ class Bullet(Sprite):
         # Create a bullet rect at (0, 0) and then set correct position.
         self.rect = pygame.Rect(0, 0, self.settings.bullet_width, 
             self.settings.bullet_height)
-        self.rect.midright = zs_game.player.rect.midright
+        self.rect.midleft = zs_game.player.rect.midleft
 
         # Store the bullet's position as a decimal value.
         self.x = float(self.rect.x)
@@ -22,7 +22,7 @@ class Bullet(Sprite):
     def update(self):
         """Move the bullet across the screen."""
         # Update the decimal position of the bullet 
-        self.x += self.settings.bullet_speed
+        self.x -= self.settings.bullet_speed
         # Update the rect positon. 
         self.rect.x = self.x
 
