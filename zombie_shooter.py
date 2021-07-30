@@ -36,9 +36,12 @@ class ZombieShooter:
         """Start the main loop for the game."""
         while True: 
             self._check_events()
-            self.player.update()
-            self._update_bullets()
-            self._update_zombies()
+
+            if self.stats.game_active:
+                self.player.update()
+                self._update_bullets()
+                self._update_zombies()
+                
             self._update_screen()
 
     def _check_events(self):
@@ -107,17 +110,32 @@ class ZombieShooter:
         if pygame.sprite.spritecollideany(self.player, self.zombies):
             self._player_hit()
 
+        #look for zombies hitting the right of the screen 
+        self._check_zombies_right()
+
     def _player_hit(self):
         """Respond to the player being hit by a zombie."""
-        self.stats.playeers_left -= 1
+        if self.stats.players_left > 0:
+            self.stats.players_left -= 1
 
-        self.zombies.empty()
-        self.bullets.empty()
+            self.zombies.empty()
+            self.bullets.empty()
 
-        self._create_hoard()
-        self.player.center_player()
+            self._create_hoard()
+            self.player.center_player()
 
-        sleep(0.5)
+            sleep(0.5)
+        else:
+            self.stats.game_active = False
+
+    def _check_zombies_right(self):
+        """Check if any zombies have reached the right of the screen."""
+        screen_rect = self.screen.get_rect()
+        for zombie in self.zombies.sprites():
+            if zombie.rect.right >= screen_rect.right:
+                #treat this the same as if the player got hit
+                self._player_hit()
+                break
 
     def _create_hoard(self):
         """Create the hoard of zombies."""

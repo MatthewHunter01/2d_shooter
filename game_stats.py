@@ -7,6 +7,9 @@ class GameStats:
         self.settings = zs_game.settings
         self.reset_stats()
 
+        #start Zombie shooter in an active state.
+        self.game_active = True
+
     def reset_stats(self):
         """Initialize stats that can change during the game."""
-        self.playeers_left = self.settings.player_limit
+        self.players_left = self.settings.player_limit
