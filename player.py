@@ -43,3 +43,8 @@ class Player:
     def blitme(self):
         """Draw the player at its current location."""
         self.screen.blit(self.image, self.rect)
+
+    def center_player(self):
+        """Center the ship on the screen"""
+        self.rect.midright = self.screen_rect.midright
+        self.y = float(self.rect.y)

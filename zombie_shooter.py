@@ -1,9 +1,11 @@
 import sys 
+from time import sleep 
 
 import pygame
 from pygame.constants import FULLSCREEN
 
 from settings import Settings
+from game_stats import GameStats
 from player import Player
 from bullet import Bullet
 from zombie import Zombie
@@ -21,6 +23,8 @@ class ZombieShooter:
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Zombie Shooter")
+
+        self.stats = GameStats(self)
 
         self.player = Player(self)
         self.bullets = pygame.sprite.Group()
@@ -77,18 +81,22 @@ class ZombieShooter:
     
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets."""
-        # Update bullet positions.
         self.bullets.update()
 
-        # Get rid of bullets that have disappeared.
         for bullet in self.bullets.copy(): 
-            if bullet.rect.right < 0:
+            if bullet.rect.right <= 0:
                 self.bullets.remove(bullet)
 
-        #check for any bullets that have hit zombies 
-        #  If so, get rid of the bullet and the zombie
+        self._check_bullet_zombie_collisions()
+
+    def _check_bullet_zombie_collisions(self): 
+        """Respond to bullet-zombie collisions."""   
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.zombies, True, True)
+
+        if not self.zombies:
+            self.bullets.empty()
+            self._create_hoard()    
 
     
     def _update_zombies(self):
@@ -96,23 +104,34 @@ class ZombieShooter:
         self._check_hoard_edges()
         self.zombies.update()
 
+        if pygame.sprite.spritecollideany(self.player, self.zombies):
+            self._player_hit()
+
+    def _player_hit(self):
+        """Respond to the player being hit by a zombie."""
+        self.stats.playeers_left -= 1
+
+        self.zombies.empty()
+        self.bullets.empty()
+
+        self._create_hoard()
+        self.player.center_player()
+
+        sleep(0.5)
+
     def _create_hoard(self):
         """Create the hoard of zombies."""
-        # create a zombie and find a number of zombies in a row
-        # Spacing between each zombie is equal to one zombie height
         zombie = Zombie(self)
         zombie_width, zombie_height = zombie.rect.size
         zombie_height = zombie.rect.height
         availble_space_y = self.settings.screen_height - (2 * zombie_height)
         number_zombies_y = availble_space_y // (2 * zombie_height)
 
-        #determine the number of rows of zombies that fit on screen
         player_width = self.player.rect.width
         availble_space_x = (self.settings.screen_height - (
                                 3 * zombie_width) - player_width)
         number_rows = availble_space_x // (2 * zombie_width)
 
-        #create the full hoard of zombies.
         for row_number in range (number_rows):
             for zombie_number in range(number_zombies_y):
                 self._create_zombie(zombie_number, row_number)
@@ -151,7 +170,6 @@ class ZombieShooter:
         pygame.display.flip()
 
 if __name__ == '__main__':
-    # Make a game instance, and run the game.
     zs = ZombieShooter()
     zs.run_game()
 

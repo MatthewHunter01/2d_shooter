@@ -9,18 +9,19 @@ class Settings:
         self.bg_color = (230, 230, 230)
 
         #Player Settings
-        self.player_speed = 1.5
+        self.player_speed = 5
+        self.player_limit = 3
 
         # Bullet Settings 
         self.bullet_speed = 6.0 
-        self.bullet_width = 28
-        self.bullet_height = 9
+        self.bullet_width = 60
+        self.bullet_height = 20
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 5
 
         #zombie settings
-        self.zombie_speed = 1.0 
-        self.hoard_shuffle_speed = 2
+        self.zombie_speed = 1
+        self.hoard_shuffle_speed = 1.3
         # hoard_direction of 1 represents down, -1 represents up 
         self.hoard_direction = 1
 
