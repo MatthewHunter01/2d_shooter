@@ -62,8 +62,18 @@ class ZombieShooter:
 
     def _check_play_button(self, mouse_pos):
         """Start a new game when button is cliked"""
-        if self.play_button.rect.collidepoint(mouse_pos):
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.stats.game_active:
+            self.settings.initialize_dynamic_settings()
+            self.stats.reset_stats()
             self.stats.game_active = True
+
+            self.zombies.empty()
+            self.bullets.empty()
+
+            self._create_hoard()
+            self.player.center_player()
+            pygame.mouse.set_visible(False)
 
 
     def _check_keydown_events(self, event):
@@ -111,6 +121,7 @@ class ZombieShooter:
         if not self.zombies:
             self.bullets.empty()
             self._create_hoard()    
+            self.settings.increase_speed()
 
     
     def _update_zombies(self):
@@ -127,6 +138,7 @@ class ZombieShooter:
     def _player_hit(self):
         """Respond to the player being hit by a zombie."""
         if self.stats.players_left > 0:
+
             self.stats.players_left -= 1
 
             self.zombies.empty()
@@ -138,6 +150,7 @@ class ZombieShooter:
             sleep(0.5)
         else:
             self.stats.game_active = False
+            pygame.mouse.set_visible(True)
 
     def _check_zombies_right(self):
         """Check if any zombies have reached the right of the screen."""
